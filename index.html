@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#641c32">
+<title>My Wellness</title>
+<style>
+:root{--w:#641c32;--r:#a94361;--p:#f5e8e8;--b:#fffafb;--l:#ead2d8}
+*{box-sizing:border-box}
+body{margin:0;background:var(--p);color:var(--w);font-family:Arial,sans-serif}
+header{background:linear-gradient(135deg,#641c32,#923c58);color:white;padding:24px 18px 28px;border-radius:0 0 26px 26px}
+h1{margin:8px 0}
+nav{display:flex;gap:6px;overflow:auto;padding:11px;background:var(--b);position:sticky;top:0;z-index:2}
+nav button,.secondary{border:0;border-radius:20px;padding:10px 13px;background:var(--p);color:var(--w);font-weight:bold;white-space:nowrap}
+nav .active,.primary{background:var(--w);color:white}
+.primary{border:0;border-radius:12px;padding:12px 15px;font-weight:bold;margin-top:10px}
+main{max-width:700px;margin:auto;padding:14px}
+.page{display:none}
+.page.active{display:block}
+h2{font-size:22px;margin:8px 0 14px}
+.card,.stat{background:var(--b);border:1px solid var(--l);border-radius:18px;padding:15px;margin:11px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat b{display:block;color:var(--r);font-size:22px;margin:6px 0}
+label{display:block;font-size:13px;font-weight:bold;margin:10px 0 5px}
+input,textarea,select{width:100%;padding:11px;border:1px solid #dcbac5;border-radius:11px;background:white;color:var(--w);font:inherit}
+textarea{min-height:60px}
+.row{display:flex;gap:8px}
+.row>*{flex:1}
+.item{padding:10px 0;border-bottom:1px solid var(--l)}
+.muted{font-size:13px;color:#986477}
+a{color:var(--r);font-weight:bold}
+.bar{height:9px;background:var(--l);border-radius:20px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--r)}
+footer{text-align:center;padding:22px;color:#986477;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>My Wellness 🎀</h1>
+<p>הרגלים קטנים, ימים טובים יותר.</p>
+</header>
+<nav>
+<button class="active" data-p="home">בית</button>
+<button data-p="work">אימונים</button>
+<button data-p="water">מים</button>
+<button data-p="steps">צעדים</button>
+<button data-p="week">יומן</button>
+<button data-p="food">אוכל</button>
+<button data-p="habits">הרגלים</button>
+</nav>
+<main>
+<section id="home" class="page active">
+<div class="card">
+<small>המרחב האישי שלך ♡</small>
+<h2>היי, איזה כיף שאת כאן!</h2>
+<p>לא צריך להיות מושלמת. בוחרים הרגל קטן ומתקדמים בקצב שלך.</p>
+<b>כל צעד קטן נחשב ✨</b>
+</div>
+<div class="grid">
+<div class="stat">💧 מים<b id="hw">0 כוסות</b><small>היום</small></div>
+<div class="stat">👟 צעדים<b id="hs">0</b><small>עדכון ידני</small></div>
+<div class="stat">🩰 אימונים<b id="hn">0</b><small>נשמרו</small></div>
+<div class="stat">♡ משימות<b id="hh">0/3</b><small>היום</small></div>
+</div>
+<div class="card">
+<h2>תזכורת קטנה</h2>
+<p>לשתות כשצמאים, לזוז בדרך שנעימה לך, לאכול מגוון ולתת לגוף גם מנוחה.</p>
+</div>
+</section>
+
+<section id="work" class="page">
+<h2>האימונים שלי 🩰</h2>
+<div class="card">
+<label>שם האימון</label><input id="wn" placeholder="למשל: פילאטיס בוקר">
+<label>קישור YouTube</label><input id="wu" placeholder="https://youtube.com/...">
+<div class="row">
+<div><label>משך בדקות</label><input id="wt" type="number" placeholder="20"></div>
+<div><label>סוג</label><select id="wy"><option>פילאטיס</option><option>הליכה</option><option>מתיחות</option><option>ריקוד</option><option>אחר</option></select></div>
+</div>
+<label>הערות</label><textarea id="we" placeholder="הערות לעצמי..."></textarea>
+<button class="primary" onclick="addW()">＋ שמירת אימון</button>
+</div>
+<div class="card"><h2>האימונים ששמרתי</h2><div id="wl" class="muted">עדיין אין אימונים.</div></div>
+</section>
+
+<section id="water" class="page">
+<h2>מעקב מים 💧</h2>
+<div class="card">
+<h2 id="wc">0 כוסות</h2>
+<p>הוסיפי כוס בכל פעם שאת שותה.</p>
+<div class="bar"><span id="wb"></span></div>
+<div class="row">
+<button class="primary" onclick="water(1)">＋ הוספת כוס</button>
+<button class="secondary" onclick="water(-1)">הפחתת כוס</button>
+</div>
+<p class="muted">זה מעקב אישי וגמיש, לא יעד שחייבים להגיע אליו.</p>
+</div>
+</section>
+
+<section id="steps" class="page">
+<h2>הצעדים שלי 👟</h2>
+<div class="card">
+<p>הזיני את המספר שמופיע באפליקציית ״בריאות״ באייפון.</p>
+<label>מספר צעדים היום</label>
+<input id="si" type="number" min="0" placeholder="למשל 3500">
+<button class="primary" onclick="saveS()">שמירת צעדים</button>
+<p id="sr" class="muted"></p>
+<p class="muted">כרגע העדכון ידני. צעדים אוטומטיים מ־Apple Health דורשים אפליקציית iPhone מקורית עם HealthKit והרשאות Apple. אתר רגיל לא יכול לקרוא את הנתונים ישירות.</p>
+</div>
+</section>
+
+<section id="week" class="page">
+<h2>היומן השבועי 🗓️</h2>
+<p class="muted">תכנון גמיש, בלי לחץ.</p>
+<div class="card" id="days"></div>
+</section>
+
+<section id="food" class="page">
+<h2>רעיונות טעימים 🍓</h2>
+<p class="muted">אוכל מגוון וטעים, בלי חוקים נוקשים.</p>
+<div class="card">
+<b>🥪 טוסט גבינה</b><p>טוסט עם גבינה, עגבנייה ומלפפון.</p>
+<b>🍝 פסטה עגבניות</b><p>פסטה ברוטב עגבניות, שום ושמן זית.</p>
+<b>🍳 כריך חביתה</b><p>חביתה, לחם וירקות בצד.</p>
+<b>🍚 סלמון ואורז</b><p>סלמון אפוי, אורז וירקות שאוהבים.</p>
+</div>
+</section>
+
+<section id="habits" class="page">
+<h2>ההרגלים שלי ♡</h2>
+<p class="muted">מסמנים רק מה שמתאים לך היום.</p>
+<div class="card" id="hl"></div>
+<button class="secondary" onclick="resetH()">איפוס סימוני היום</button>
+</section>
+</main>
+<footer>My Wellness · small steps, kind days ♡</footer>
+
+<script>
+const $=x=>document.getElementById(x);
+const today=()=>new Date().toLocaleDateString('he-IL');
+let d=JSON.parse(localStorage.getItem('mw')||'{}');
+
+function persist(){localStorage.setItem('mw',JSON.stringify(d));render()}
+if(d.date!==today()){
+d.date=today();d.water=0;d.steps=0;d.habits=[];persist()
+}
+
+function water(n){d.water=Math.max(0,(d.water||0)+n);persist()}
+function saveS(){d.steps=Math.max(0,Number($('si').value)||0);persist()}
+function addW(){
+let n=$('wn').value.trim(),u=$('wu').value.trim();
+if(!n){alert('כתבי שם לאימון');return}
+if(u&&!/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//i.test(u)){alert('הכניסי קישור YouTube תקין');return}
+d.work=d.work||[];
+d.work.push({n,u,t:$('wt').value,y:$('wy').value,e:$('we').value});
+['wn','wu','wt','we'].forEach(x=>$(x).value='');
+persist()
+}
+function delW(i){d.work.splice(i,1);persist()}
+function resetH(){d.habits=[];persist()}
+function toggle(i,v){d.habits=d.habits||[];d.habits[i]=v;persist()}
+
+const tasks=['לשתות מים במהלך היום','למצוא רגע לתנועה נעימה','להקדיש זמן למנוחה או למשהו שאוהבים'];
+const days=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+
+function esc(s){
+return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+}
+
+function render(){
+$('hw').textContent=(d.water||0)+' כוסות';
+$('wc').textContent=(d.water||0)+' כוסות';
+$('wb').style.width=Math.min(100,(d.water||0)/8*100)+'%';
+$('hs').textContent=(d.steps||0).toLocaleString('he-IL');
+$('si').value=d.steps||'';
+$('sr').textContent='נשמרו '+(d.steps||0).toLocaleString('he-IL')+' צעדים';
+$('hn').textContent=(d.work||[]).length;
+$('hh').textContent=(d.habits||[]).filter(Boolean).length+'/3';
+
+$('wl').innerHTML=(d.work||[]).length?
+d.work.map((w,i)=>`<div class="item"><b>${esc(w.n)}</b><p class="muted">${esc(w.y)} · ${esc(w.t||'')} דקות ${w.e?'· '+esc(w.e):''}</p>${w.u?`<a href="${esc(w.u)}" target="_blank" rel="noopener">פתיחת הסרטון ▶</a><br>`:''}<button class="secondary" onclick="delW(${i})">מחיקה</button></div>`).join(''):
+'עדיין אין אימונים.';
+
+$('hl').innerHTML=tasks.map((t,i)=>`<div class="item"><label><input type="checkbox" style="width:auto" ${d.habits&&d.habits[i]?'checked':''} onchange="toggle(${i},this.checked)"> ${t}</label></div>`).join('');
+
+$('days').innerHTML=days.map(x=>`<div class="item"><b>${x}</b><p class="muted">♡ יום חדש, הזדמנות חדשה</p></div>`).join('');
+}
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+document.querySelectorAll('nav button,.page').forEach(x=>x.classList.remove('active'));
+b.classList.add('active');
+$(b.dataset.p).classList.add('active');
+scrollTo(0,0);
+});
+render();
+</script>
+</body>
+</html>
